@@ -18,7 +18,7 @@ sudo apt install mono-devel
 ## How to compile and run
 Compile:
 ```
-mcs stableMatcher.cs utils.cs
+mcs stableMatcher.cs utils.cs examples.cs
 ```
 Run:
 ```
