@@ -1,7 +1,26 @@
 # stable-matcher
-Finds stable matching for two parties with a set of preferences. This code is for illustrative and learning purposes.
+The algorithm finds the stable matching for two parties with a set of preferences. The purpose of this project is to provide illustrative learning experience.
 
-The Stable Matching algorithm used in this project is the Gale-Shapley algorithm which is very simple but very powerful algorithm to find stable matches for two parties each with a set of preferences. It was first introduced by D. Gale and L.S. Shapley in the article "College Admissions and the Stability of Marriage" published in 1962 in "The American Mathematical Monthly" (see http://www.jstor.org/stable/2312726). This algorithm and the theory behind it are so helpful and interesting that led Lloyd S. Shapley together with Alvin E. Roth to win the Nobel Prize in Economics in 2012 "for the theory of stable allocations and the practice of market design" (see http://www.nobelprize.org/nobel_prizes/economics/laureates/2012/).
+The Stable Matching algorithm used in this project is called the Gale-Shapley algorithm, which is a simple but powerful algorithm to find stable matches for two parties, each with a set of preferences. It was first introduced by D. Gale and L.S. Shapley in the article "College Admissions and the Stability of Marriage" published in 1962 in "The American Mathematical Monthly" (see http://www.jstor.org/stable/2312726). This algorithm and the theory behind it are so invaluable and interesting that it led Lloyd S. Shapley together with Alvin E. Roth to win the Nobel Prize in Economics in 2012 "for the theory of stable allocations and the practice of market design" (see http://www.nobelprize.org/nobel_prizes/economics/laureates/2012/).
+
+## The algorithm:
+```
+S = a set of stable matching, M = group of males, W = group of females
+
+S ⟸ { }
+Initially all m ∈ M and w ∈ W have no partners
+While ∃ m who is unmatched and has not proposed to every w
+  w ⟸ first w on m's list to propose
+    If w = unmatched
+      Add m-w pair to S
+    Else if w prefers m to her current parnter m'
+      Delete m'-w pair from S
+      Add m-w pair to S
+    Else
+      w rejects m
+End While
+Return S
+```
 
 ## Setup mono
 Follow the instructions here to install mono:
