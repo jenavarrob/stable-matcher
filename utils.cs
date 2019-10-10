@@ -58,7 +58,7 @@ namespace StableMatchingAlgorithm {
         }
 
 		static public bool isStable(int[] fianceeArray, int[,] menPrefs, int[,] womenPrefs){
-			int size = fianceeArray.GetLength();
+			int size = fianceeArray.Length;
 			if(size != menPrefs.GetLength(1) || size != womenPrefs.GetLength(1)){
 				//Sizes do not match, so the matching cant be stable
 				return false;

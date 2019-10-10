@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace StableMatchingAlgorithm {
     static public class Examples {
         static public int[,] loadPrefsSize5 (int option) {
@@ -22,6 +25,35 @@ namespace StableMatchingAlgorithm {
                 };
             }
             return prefs;
+        }
+
+        static public List<int> loadTrivialMatchingList(int size)
+        {
+            List<int> trivialMatching = new List<int>();
+            for (int i = 0; i < size; i++)
+            {
+                trivialMatching.Add(i + 1);
+            }
+            return trivialMatching;
+        }
+
+        static public int[] loadTrivialMatching(int size)
+        {
+            return loadTrivialMatchingList(size).ToArray();
+        }
+
+        static public int[] loadRandomMatching(int size)
+        {
+            List<int> matchingCandidates = loadTrivialMatchingList(size);
+            List<int> randomMatching = new List<int>();
+            Random random = new Random();
+            while(matchingCandidates.Count > 0)
+            {
+                int randomIndex = random.Next(0, matchingCandidates.Count - 1);
+                randomMatching.Add(matchingCandidates[randomIndex]);
+                matchingCandidates.RemoveAt(randomIndex);
+            }
+            return randomMatching.ToArray();
         }
     }
 }
