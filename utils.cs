@@ -56,5 +56,16 @@ namespace StableMatchingAlgorithm {
 
             return fiancee;
         }
+
+		static public bool isStable(int[] fianceeArray, int[,] menPrefs, int[,] womenPrefs){
+			int size = fianceeArray.GetLength();
+			if(size != menPrefs.GetLength(1) || size != womenPrefs.GetLength(1)){
+				//Sizes do not match, so the matching cant be stable
+				return false;
+			}
+
+			//TODO: Implement stability check, only boilerplate code now
+			return false;
+		}
     }
 }
