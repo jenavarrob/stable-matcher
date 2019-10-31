@@ -22,32 +22,46 @@ namespace StableMatchingAlgorithm {
 
             //show results
             Console.WriteLine("Gale-Shapley solution to stable matching problem:");
-            for (int i = 0; i < fiance.Length; i++)
-            {
-                Console.Write("W{0}-M{1}, ", i, fiance[i]);
-            }
+            printMatching(fiance);
             Utils.isStable(fiance, menPrefs, womenPrefs, true);
 
             Console.WriteLine();
             Console.WriteLine("Trivial solution to stable matching problem:");
-            bool trivialMatchingStable = Utils.isStable(trivialMatching, menPrefs, womenPrefs);
-            for (int i = 0; i < trivialMatching.Length; i++)
-            {
-                Console.Write("W{0}-M{1}, ", i, trivialMatching[i]);
-            }
+            printMatching(trivialMatching);
             Utils.isStable(trivialMatching, menPrefs, womenPrefs, true);
 
             Console.WriteLine();
             Console.WriteLine("Random solution to stable matching problem:");
-            for (int i = 0; i < randomMatching.Length; i++)
-            {
-                Console.Write("W{0}-M{1}, ", i, randomMatching[i]);
-            }
+            printMatching(randomMatching);
             Utils.isStable(randomMatching, menPrefs, womenPrefs, true);
+
+
+            Console.WriteLine();
+            Console.WriteLine("Press Enter to start the brute force method.");
+            Console.ReadLine();
+            int[] bruteForceMatching = Utils.findStableMatchesUsingBruteForce(menPrefs,womenPrefs, out bool successful);
+            if (successful)
+            {
+                Console.WriteLine("Brute Force successful: ");
+                printMatching(bruteForceMatching);
+                Utils.isStable(bruteForceMatching, menPrefs, womenPrefs, true);
+            }
+            else
+            {
+                Console.WriteLine("Brute Force not succesful.");
+            }
 
             Console.WriteLine ();
             Console.Write("Press Enter to close this window.");
             Console.ReadLine();
+        }
+
+        static public void printMatching(int[] matching)
+        {
+            for (int i = 0; i < matching.Length; i++)
+            {
+                Console.Write("W{0}-M{1}, ", i, matching[i]);
+            }
         }
 
         static public void showPrefs (int[,] prefs) {

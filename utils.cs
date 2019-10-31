@@ -62,6 +62,55 @@ namespace StableMatchingAlgorithm {
             return fiance;
         }
 
+        //Brute Force Algorithm to check all possible combinations between men and women, to find the first stable matching
+        //Wrapper/Starter around bruteForceRecursion, which implements the algorithm in a recursive way.
+        static public int[] findStableMatchesUsingBruteForce(int[,] menPrefs, int[,] womenPrefs, out bool successful)
+        {
+            int size = menPrefs.GetLength(1);
+            for (int m = 0; m < size; m++)
+            {
+                List<int> currentfiance = new List<int>();
+                currentfiance.Add(m);
+                
+                if (bruteForceRecursion(currentfiance, menPrefs, womenPrefs, out List<int> fiance))
+                {
+                    successful = true;
+                    return fiance.ToArray();
+                }
+            }
+            successful = false;
+            return new int[size];
+        }
+
+        static private bool bruteForceRecursion(List<int> currentFiances, int[,] menPrefs, int[,] womenPrefs, out List<int> fiance)
+        {
+            int currentSize = currentFiances.Count;
+            int maxSize = menPrefs.GetLength(1);
+            if(currentSize >= maxSize)
+            {
+                fiance = currentFiances;
+                return isStable(fiance.ToArray(), menPrefs, womenPrefs);
+            }
+            else
+            {
+                for(int m = 0; m < maxSize; m++)
+                {
+                    if(!currentFiances.Contains(m))
+                    {
+                        List<int> newCurrentFiances = new List<int>(currentFiances);
+                        newCurrentFiances.Add(m);
+                        if(bruteForceRecursion(newCurrentFiances,menPrefs,womenPrefs,out fiance))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            fiance = new List<int>();
+            return false;
+        }
+
+
         //Found here: https://stackoverflow.com/a/22595707
         public static Dictionary<TValue, TKey> Reverse<TKey, TValue>(this IDictionary<TKey, TValue> source)
         {
