@@ -14,25 +14,24 @@ namespace StableMatchingAlgorithm {
             showPrefs(womenPrefs);
             Console.WriteLine();
 
-            int[] fiancee = Utils.findStableMatchesUsingGaleShapleyAlgorithm(menPrefs, womenPrefs);
-            bool fianceeStable = Utils.isStable(fiancee, menPrefs, womenPrefs);
+            int[] fiance = Utils.findStableMatchesUsingGaleShapleyAlgorithm(menPrefs, womenPrefs);
 
             int[] trivialMatching = Examples.loadTrivialMatching(5);
-            bool trivialMatchingStable = Utils.isStable(trivialMatching, menPrefs, womenPrefs);
 
             int[] randomMatching = Examples.loadRandomMatching(5);
-            bool randomMatchingStable = Utils.isStable(randomMatching, menPrefs, womenPrefs);
 
-            //show results            
+            //show results
             Console.WriteLine("Gale-Shapley solution to stable matching problem:");
-            for (int i = 0; i < fiancee.Length; i++)
+            bool fianceStable = Utils.isStable(fiance, menPrefs, womenPrefs);
+            for (int i = 0; i < fiance.Length; i++)
             {
-                Console.Write("W{0}-M{1}, ", i, fiancee[i]);
+                Console.Write("W{0}-M{1}, ", i, fiance[i]);
             }
-            Console.WriteLine("Output from isStable: " + fianceeStable.ToString());
+            Console.WriteLine("Output from isStable: " + fianceStable.ToString());
 
             Console.WriteLine();
             Console.WriteLine("Trivial solution to stable matching problem:");
+            bool trivialMatchingStable = Utils.isStable(trivialMatching, menPrefs, womenPrefs);
             for (int i = 0; i < trivialMatching.Length; i++)
             {
                 Console.Write("W{0}-M{1}, ", i, trivialMatching[i]);
@@ -41,6 +40,7 @@ namespace StableMatchingAlgorithm {
 
             Console.WriteLine();
             Console.WriteLine("Random solution to stable matching problem:");
+            bool randomMatchingStable = Utils.isStable(randomMatching, menPrefs, womenPrefs);
             for (int i = 0; i < randomMatching.Length; i++)
             {
                 Console.Write("W{0}-M{1}, ", i, randomMatching[i]);

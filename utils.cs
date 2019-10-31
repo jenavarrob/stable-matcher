@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace StableMatchingAlgorithm {
     static public class Utils {
         /** Converts from a preference matrix to a ranked-preference matrix, i.e. 
@@ -27,16 +30,17 @@ namespace StableMatchingAlgorithm {
         }
 
         // Gale-Shapley Stable Matching Algorithm
+        // Returns the fiances assigned to each woman, held in an int array
         static public int[] findStableMatchesUsingGaleShapleyAlgorithm (int[,] menPrefs, int[,] womenPrefs) {
             int size = menPrefs.GetLength (1);
             int[,] rank = getRankedMatrixWithDummy (womenPrefs);
 
             //start stable marriage algorithm
-            int[] fiancee = new int[size];
-            int[] next = new int[size]; //to track the next in the list of women candidates
+            int[] fiance = new int[size];   //holds the assigned fiance of each woman
+            int[] next = new int[size];     //to track the next in the list of women candidates
 
             for (int i = 0; i < size; i++) { //start counters to zero index
-                fiancee[i] = size;
+                fiance[i] = size;
                 next[i] = -1;
             }
 
@@ -46,26 +50,73 @@ namespace StableMatchingAlgorithm {
                 while (s != size) {
                     next[s] = next[s] + 1;
                     int w = menPrefs[s, next[s]];
-                    if (rank[w, s] < rank[w, fiancee[w]]) {
-                        int t = fiancee[w];
-                        fiancee[w] = s;
+                    if (rank[w, s] < rank[w, fiance[w]]) {
+                        int t = fiance[w];
+                        fiance[w] = s;
                         s = t;
                     }
                 }
             }
 
-            return fiancee;
+            return fiance;
         }
 
-		static public bool isStable(int[] fianceeArray, int[,] menPrefs, int[,] womenPrefs){
-			int size = fianceeArray.Length;
+        //Found here: https://stackoverflow.com/a/22595707
+        public static Dictionary<TValue, TKey> Reverse<TKey, TValue>(this IDictionary<TKey, TValue> source)
+        {
+            var dictionary = new Dictionary<TValue, TKey>();
+            foreach (var entry in source)
+            {
+                if (!dictionary.ContainsKey(entry.Value))
+                    dictionary.Add(entry.Value, entry.Key);
+            }
+            return dictionary;
+        }
+
+        static private Dictionary<int, int> convertArrayToDict(int[] array)
+        {
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            for(int i = 0; i<array.Length; i++)
+            {
+                dict.Add(i, array[i]);
+            }
+            return dict;
+        }
+
+		static public bool isStable(int[] fianceArray, int[,] menPrefs, int[,] womenPrefs){
+			int size = fianceArray.Length;
 			if(size != menPrefs.GetLength(1) || size != womenPrefs.GetLength(1)){
-				//Sizes do not match, so the matching cant be stable
-				return false;
+                //Sizes do not match, so the matching is incomplete
+                Console.WriteLine("-- isStable check error: size of fianceArray doesnt match menPrefs or womenPrefs -- ");
+                return false;
 			}
 
-			//TODO: Implement stability check, only boilerplate code now
-			return false;
+            Dictionary<int, int> fianceDict = convertArrayToDict(fianceArray);
+            Dictionary<int, int> fianceeDict = Reverse<int,int>(fianceDict);
+            //Go through all women
+            for(int selectedWoman = 0; selectedWoman<size; selectedWoman++)
+            {
+                //Get current fiance
+                int selectedWomanFiance = fianceDict[selectedWoman];
+                //Go through all men
+                for(int selectedMan = 0; selectedMan<size; selectedMan++)
+                {
+                    //Exclude currentfiance
+                    if(selectedMan != selectedWomanFiance)
+                    {
+                        //Check if the selected man fits better to the selected woman (both prefer themselves over their current partners)
+                        int selectedManFiancee = fianceeDict[selectedMan];
+                        if( womenPrefs[selectedWoman, selectedMan] < womenPrefs[selectedWoman, selectedWomanFiance] && 
+                            menPrefs[selectedMan, selectedWoman] < menPrefs[selectedMan, selectedManFiancee]
+                            )
+                        {
+                            Console.WriteLine("-- isStable check: M{0}({4}) and W{1}({5}) like each other more than their partners W{2}({6}) and M{3}({7}) -- ", selectedMan, selectedWoman, selectedManFiancee, selectedWomanFiance, menPrefs[selectedMan, selectedWoman], womenPrefs[selectedWoman, selectedMan], menPrefs[selectedMan, selectedManFiancee], womenPrefs[selectedWoman, selectedWomanFiance]);
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
 		}
     }
 }

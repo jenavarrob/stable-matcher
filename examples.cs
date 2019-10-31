@@ -32,7 +32,7 @@ namespace StableMatchingAlgorithm {
             List<int> trivialMatching = new List<int>();
             for (int i = 0; i < size; i++)
             {
-                trivialMatching.Add(i + 1);
+                trivialMatching.Add(i);
             }
             return trivialMatching;
         }
