@@ -22,12 +22,11 @@ namespace StableMatchingAlgorithm {
 
             //show results
             Console.WriteLine("Gale-Shapley solution to stable matching problem:");
-            bool fianceStable = Utils.isStable(fiance, menPrefs, womenPrefs);
             for (int i = 0; i < fiance.Length; i++)
             {
                 Console.Write("W{0}-M{1}, ", i, fiance[i]);
             }
-            Console.WriteLine("Output from isStable: " + fianceStable.ToString());
+            Utils.isStable(fiance, menPrefs, womenPrefs, true);
 
             Console.WriteLine();
             Console.WriteLine("Trivial solution to stable matching problem:");
@@ -36,19 +35,19 @@ namespace StableMatchingAlgorithm {
             {
                 Console.Write("W{0}-M{1}, ", i, trivialMatching[i]);
             }
-            Console.WriteLine("Output from isStable: " + trivialMatchingStable.ToString());
+            Utils.isStable(trivialMatching, menPrefs, womenPrefs, true);
 
             Console.WriteLine();
             Console.WriteLine("Random solution to stable matching problem:");
-            bool randomMatchingStable = Utils.isStable(randomMatching, menPrefs, womenPrefs);
             for (int i = 0; i < randomMatching.Length; i++)
             {
                 Console.Write("W{0}-M{1}, ", i, randomMatching[i]);
             }
-            Console.WriteLine("Output from isStable: " + randomMatchingStable.ToString());
+            Utils.isStable(randomMatching, menPrefs, womenPrefs, true);
 
             Console.WriteLine ();
-            Console.Read();
+            Console.Write("Press Enter to close this window.");
+            Console.ReadLine();
         }
 
         static public void showPrefs (int[,] prefs) {

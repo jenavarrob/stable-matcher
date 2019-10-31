@@ -31,6 +31,7 @@ namespace StableMatchingAlgorithm {
 
         // Gale-Shapley Stable Matching Algorithm
         // Returns the fiances assigned to each woman, held in an int array
+        //TODO: Currently buggy, since it returns an instable solution (connects M0 with W0, with W0 having bad preference (4) for M0)
         static public int[] findStableMatchesUsingGaleShapleyAlgorithm (int[,] menPrefs, int[,] womenPrefs) {
             int size = menPrefs.GetLength (1);
             int[,] rank = getRankedMatrixWithDummy (womenPrefs);
@@ -83,11 +84,13 @@ namespace StableMatchingAlgorithm {
             return dict;
         }
 
-		static public bool isStable(int[] fianceArray, int[,] menPrefs, int[,] womenPrefs){
-			int size = fianceArray.Length;
+		static public bool isStable(int[] fianceArray, int[,] menPrefs, int[,] womenPrefs, bool giveInfo = false){
+            if(giveInfo) Console.WriteLine("isStable check:");
+
+            int size = fianceArray.Length;
 			if(size != menPrefs.GetLength(1) || size != womenPrefs.GetLength(1)){
                 //Sizes do not match, so the matching is incomplete
-                Console.WriteLine("-- isStable check error: size of fianceArray doesnt match menPrefs or womenPrefs -- ");
+                if (giveInfo) Console.WriteLine("Error: size of fianceArray doesnt match menPrefs or womenPrefs -- Returning false");
                 return false;
 			}
 
@@ -110,12 +113,13 @@ namespace StableMatchingAlgorithm {
                             menPrefs[selectedMan, selectedWoman] < menPrefs[selectedMan, selectedManFiancee]
                             )
                         {
-                            Console.WriteLine("-- isStable check: M{0}({4}) and W{1}({5}) like each other more than their partners W{2}({6}) and M{3}({7}) -- ", selectedMan, selectedWoman, selectedManFiancee, selectedWomanFiance, menPrefs[selectedMan, selectedWoman], womenPrefs[selectedWoman, selectedMan], menPrefs[selectedMan, selectedManFiancee], womenPrefs[selectedWoman, selectedWomanFiance]);
+                            if (giveInfo) Console.WriteLine("M{0}({4} for W{1}) and W{1}({5} for M{0}) like each other more than their partners W{2}({6} from M{0}) and M{3}({7} from W{1})", selectedMan, selectedWoman, selectedManFiancee, selectedWomanFiance, menPrefs[selectedMan, selectedWoman], womenPrefs[selectedWoman, selectedMan], menPrefs[selectedMan, selectedManFiancee], womenPrefs[selectedWoman, selectedWomanFiance]);
                             return false;
                         }
                     }
                 }
             }
+            if (giveInfo) Console.WriteLine("This is a stable matching.");
             return true;
 		}
     }
